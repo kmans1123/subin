@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#19153d" />
+    <meta name="description" content="드림캐처로 악몽을 걸러내고 수빈이에게 좋은 꿈을 보내는 게임" />
+    <title>숲속에 잠자는 수빈이</title>
+    <link rel="icon" type="image/png" href="../carrot.png?v=2" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Jua&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./dream-catcher.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="intro" id="intro" aria-labelledby="introTitle">
+        <div class="intro-card">
+          <p class="eyebrow">수빈이의 꿈속 🌙</p>
+          <h1 id="introTitle">잠자는 숲속의 수빈이</h1>
+          <div class="intro-character">
+            <span aria-hidden="true"></span>
+            <img src="./assets/subin-light-sleep.png" alt="잠든 지 얼마 안 된 수빈이" />
+          </div>
+          <p class="intro-story">
+            좋은 꿈은 수빈이에게 조용히 스며들고<br />
+            악몽은 드림캐처로 걸러주세요.
+          </p>
+          <div class="rule-cards">
+            <div><b>좋은 꿈 ⭐🦋🌸</b><em>자동으로 전달돼요</em></div>
+            <div><b>악몽 👻🦇🥕</b><em>드림캐처로 받아요</em></div>
+          </div>
+          <button class="jelly-button" id="startButton" type="button">좋은 꿈을 지켜주기 ✨</button>
+          <a class="home-link" href="../index.html">메인으로</a>
+        </div>
+      </section>
+
+      <section class="game" id="game" hidden aria-label="드림캐처 게임">
+        <div class="world" id="world">
+          <img class="forest" src="./assets/dream-forest-bg.png" alt="몽환적인 꿈속 숲" />
+          <div class="night-tone" aria-hidden="true"></div>
+          <div class="warmth" aria-hidden="true"></div>
+          <div class="mist" aria-hidden="true"><i></i><i></i></div>
+          <div class="sky-stars" id="skyStars" aria-hidden="true"></div>
+          <div class="stage-lights" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+          <header class="hud">
+            <div class="stage-info">
+              <span id="stageEmoji">😴</span>
+              <div><small>수면 단계</small><strong id="stageName">잠든 지 얼마 안 됨</strong></div>
+            </div>
+            <button class="pause-button" id="pauseButton" type="button" aria-label="일시정지">Ⅱ</button>
+            <div class="progress-card">
+              <div><span>깊은 잠까지</span><strong id="progressText">20%</strong></div>
+              <div class="progress-track" role="progressbar" aria-label="수면 단계 진행도" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20">
+                <i id="progressFill"></i>
+              </div>
+              <div class="dream-legend" aria-label="떨어지는 꿈 구분">
+                <span><b>⭐🌸</b> 좋은 꿈은 자동 전달</span>
+                <span><b>👻🥕</b> 악몽만 받기</span>
+              </div>
+            </div>
+          </header>
+
+          <div class="playfield" id="playfield">
+            <div class="falling-layer" id="fallingLayer"></div>
+            <div class="effect-layer" id="effectLayer" aria-hidden="true"></div>
+
+            <div class="princess" id="princess">
+              <span class="princess-glow" aria-hidden="true"></span>
+              <img id="princessImage" alt="잠들어 있는 수빈이" />
+              <span class="sleep-z" id="sleepZ" aria-hidden="true">Z <b>z</b></span>
+              <span class="image-fallback">수빈이 이미지를 불러오지 못했어요.</span>
+            </div>
+
+            <div class="dream-catcher" id="dreamCatcher" aria-label="드림캐처">
+              <span class="catcher-halo"></span>
+              <span class="catcher-loop"></span>
+              <span class="catcher-ring">
+                <span class="web-circle web-circle--outer"></span>
+                <span class="web-circle web-circle--inner"></span>
+                <span class="web-center"></span>
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </span>
+              <span class="hanging-cord hanging-cord--left"><b></b></span>
+              <span class="hanging-cord hanging-cord--middle"><b></b></span>
+              <span class="hanging-cord hanging-cord--right"><b></b></span>
+              <span class="feather feather--left"></span>
+              <span class="feather feather--middle"></span>
+              <span class="feather feather--right"></span>
+            </div>
+          </div>
+
+          <div class="message" id="message" role="status" aria-live="polite"></div>
+          <p class="game-hint" id="gameHint">떨어지는 악몽만 드림캐처로 받아주세요</p>
+
+          <div class="move-controls" aria-label="드림캐처 이동">
+            <button id="leftButton" type="button" aria-label="왼쪽으로 이동"><span>←</span>왼쪽</button>
+            <button id="rightButton" type="button" aria-label="오른쪽으로 이동"><span>→</span>오른쪽</button>
+          </div>
+
+          <nav class="bottom-menu" aria-label="게임 메뉴">
+            <button id="helpButton" type="button"><span>?</span>도움말</button>
+            <button id="restartButton" type="button"><span>↻</span>다시 하기</button>
+            <a href="../index.html"><span>⌂</span>메인</a>
+          </nav>
+        </div>
+      </section>
+
+      <section class="overlay" id="pauseOverlay" hidden aria-labelledby="pauseTitle">
+        <div class="dialog">
+          <p class="dialog-icon">🌙</p>
+          <h2 id="pauseTitle">꿈의 시간이 잠시 멈췄어요</h2>
+          <button class="jelly-button" id="resumeButton" type="button">계속 지켜주기</button>
+          <button class="soft-button" id="pauseRestartButton" type="button">처음부터 시작</button>
+        </div>
+      </section>
+
+      <section class="overlay" id="helpOverlay" hidden aria-labelledby="helpTitle">
+        <div class="dialog help-dialog">
+          <h2 id="helpTitle">드림캐처 사용법</h2>
+          <p>화면 아래의 ← → 버튼으로 드림캐처를 움직여요.</p>
+          <p>좋은 꿈은 수빈이에게 자동으로 전달되므로 신경 쓰지 않아도 돼요.</p>
+          <p>당근·박쥐·유령 같은 악몽만 드림캐처로 받아 정화해요.</p>
+          <p>초반은 천천히 시작하고, 깊이 잠들수록 악몽이 빨라져요.</p>
+          <p>PC에서는 방향키 또는 A·D 키를 사용할 수 있어요.</p>
+          <button class="jelly-button" id="closeHelpButton" type="button">알겠어요</button>
+        </div>
+      </section>
+
+      <section class="overlay" id="gameOverOverlay" hidden aria-labelledby="gameOverTitle">
+        <div class="dialog result-dialog">
+          <img id="grumpyImage" alt="잠에서 깨서 삐진 수빈이" />
+          <h2 id="gameOverTitle">수빈이가 억지로 깨버렸어요</h2>
+          <p>나 아직 자는 중인데...</p>
+          <button class="jelly-button" id="retryButton" type="button">다시 재워주기</button>
+          <a class="soft-link" href="../index.html">메인으로</a>
+        </div>
+      </section>
+
+      <section class="clear-screen" id="clearScreen" hidden aria-labelledby="clearTitle">
+        <div class="sunrise" aria-hidden="true"></div>
+        <div class="clear-card">
+          <p class="eyebrow">꿈 지키기 성공 ☀️</p>
+          <div class="happy-character">
+            <span aria-hidden="true"></span>
+            <img id="happyImage" alt="푹 자고 행복하게 일어난 수빈이" />
+          </div>
+          <h2 id="clearTitle">수빈이가 행복하게 일어났어요!</h2>
+          <p>좋은 꿈만 가득한 포근한 밤이었어요. ☺️</p>
+          <button class="jelly-button" id="playAgainButton" type="button">다시 꿈 지켜주기</button>
+          <a class="soft-link" href="../index.html">메인으로</a>
+        </div>
+      </section>
+    </main>
+    <script src="./dream-catcher.js" defer></script>
+  </body>
+</html>
