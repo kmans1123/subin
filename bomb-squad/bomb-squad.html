@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#f7c9d9" />
+    <meta
+      name="description"
+      content="힌트를 읽고 알맞은 순서로 무지개 전선을 자르는 귀여운 추리 퍼즐 게임"
+    />
+    <title>폭탄 해체반장 수빈이</title>
+    <link rel="icon" type="image/png" href="../carrot.png?v=2" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Jua&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./bomb-squad.css" />
+  </head>
+  <body>
+    <main class="app">
+      <div class="background-hearts" id="backgroundHearts" aria-hidden="true"></div>
+      <section class="intro" id="intro" aria-labelledby="introTitle">
+        <div class="intro-card">
+          <p class="eyebrow">수빈이에게 온 수상한 선물 🎁</p>
+          <div class="intro-bomb" aria-hidden="true">
+            <span class="intro-bomb__spark">✦</span>
+            <span class="intro-bomb__body">💣</span>
+            <span class="intro-bomb__heart">♡</span>
+          </div>
+          <h1 id="introTitle">폭탄 해체반장<br />수빈이</h1>
+          <p class="intro-story">
+            모니터 화면의 힌트를 모두 읽고<br />알맞은 순서로 전선을 잘라주세요!
+          </p>
+
+          <fieldset class="difficulty-picker">
+            <legend>난이도를 골라요</legend>
+            <label>
+              <input type="radio" name="difficulty" value="easy" checked />
+              <span><b>쉬움</b><small>전선 3개</small></span>
+            </label>
+            <label>
+              <input type="radio" name="difficulty" value="normal" />
+              <span><b>보통</b><small>전선 5개</small></span>
+            </label>
+            <label>
+              <input type="radio" name="difficulty" value="hard" />
+              <span><b>어려움</b><small>전선 7개</small></span>
+            </label>
+            <label>
+              <input type="radio" name="difficulty" value="nightmare" />
+              <span><b>악몽</b><small>전선 7개 · 45초</small></span>
+            </label>
+          </fieldset>
+
+          <div class="intro-rules">
+            <span>💡 힌트는 매번 달라져요</span>
+            <span>✂️ 틀린 전선을 자르면 실패!</span>
+          </div>
+          <button class="jelly-button" id="startButton" type="button">해체 임무 시작 ✨</button>
+          <a class="home-link" href="../index.html">메인으로</a>
+        </div>
+      </section>
+
+      <section class="game" id="game" hidden aria-label="폭탄 해체 게임">
+        <div class="game-shell" id="gameShell">
+          <header class="game-header">
+            <button class="title-button" id="titleButton" type="button" aria-label="게임 제목">
+              <small>폭탄 해체반장</small>
+              <strong>수빈이</strong>
+            </button>
+            <div class="timer-card" id="timerCard" role="timer" aria-live="off">
+              <span>남은 시간</span>
+              <strong id="timerText">01:15</strong>
+            </div>
+          </header>
+
+          <div class="timer-track" aria-hidden="true"><i id="timerFill"></i></div>
+
+          <section class="mission-card" aria-labelledby="missionTitle">
+            <div class="mission-heading">
+              <div>
+                <p id="missionTitle">임무 메모</p>
+                <strong id="difficultyLabel">쉬움 · 전선 3개</strong>
+              </div>
+              <span class="cut-progress" id="cutProgress">0 / 3</span>
+            </div>
+            <p>힌트를 조합해 첫 번째 전선부터 차례대로 잘라요.</p>
+          </section>
+
+          <section class="toy-bomb" aria-label="장난감 폭탄">
+            <div class="bomb-top" aria-hidden="true">
+              <i></i><i></i><i></i>
+            </div>
+            <div class="bomb-shape" aria-label="둥근 장난감 폭탄 본체">
+              <span class="bomb-fuse"><i></i></span>
+              <span class="bomb-sphere"><i class="bomb-sphere__shine"></i><b>♡</b></span>
+              <span class="bomb-foot bomb-foot--left"></span>
+              <span class="bomb-foot bomb-foot--right"></span>
+            </div>
+            <div class="bomb-face" aria-label="폭탄 상태">
+              <div class="bomb-warning">
+                <span class="bomb-warning__icon" aria-hidden="true">⚠</span>
+                <div><b>장난감 폭탄 · B-0714</b><small>전선을 순서대로 분리하세요</small></div>
+              </div>
+              <div class="armed-indicator" id="armedIndicator">
+                <i></i><span id="bombState">대기</span>
+              </div>
+            </div>
+            <div class="lcd-panel">
+              <div class="lcd-label"><span>힌트 모니터</span><b id="hintCount">3개 힌트</b></div>
+              <ol class="hint-list" id="hintList"></ol>
+              <div class="debug-answer" id="debugAnswer" hidden>
+                <span>정답 순서</span>
+                <strong id="debugAnswerText"></strong>
+              </div>
+            </div>
+
+            <div class="wire-board">
+              <div class="wire-board__label"><span>전선 단자 · 해체 순서</span><b>✂️ 단자 분리</b></div>
+              <div class="wire-list" id="wireList" aria-label="자를 전선 목록"></div>
+            </div>
+            <div class="bomb-stickers" aria-hidden="true"><span>♡</span><span>조심해서 해체</span><span>★</span></div>
+          </section>
+
+          <p class="status-message" id="statusMessage" role="status" aria-live="polite">
+            첫 번째 전선은 무엇일까요?
+          </p>
+
+          <nav class="bottom-menu" aria-label="게임 메뉴">
+            <button id="newGameButton" type="button"><span>↻</span>새 문제</button>
+            <button id="difficultyButton" type="button"><span>☰</span>난이도</button>
+            <a href="../index.html"><span>⌂</span>메인</a>
+          </nav>
+        </div>
+      </section>
+
+      <section class="overlay" id="resultOverlay" hidden aria-labelledby="resultTitle">
+        <div class="result-card" id="resultCard">
+          <div class="result-visual" id="resultVisual" aria-hidden="true">🎁</div>
+          <p class="result-eyebrow" id="resultEyebrow">해체 성공!</p>
+          <h2 id="resultTitle">선물 상자가 열렸어요!</h2>
+          <div class="result-note">
+            <span>수빈이에게 보내는 쪽지 💌</span>
+            <p class="result-message" id="resultMessage">❤️ 사랑해</p>
+          </div>
+          <button class="jelly-button" id="retryButton" type="button">한 번 더 도전</button>
+          <button class="soft-button" id="changeDifficultyButton" type="button">난이도 바꾸기</button>
+          <a class="home-link" href="../index.html">메인으로</a>
+        </div>
+      </section>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      <div class="heart-layer" id="heartLayer" aria-hidden="true"></div>
+    </main>
+    <script src="./bomb-squad.js" defer></script>
+  </body>
+</html>
